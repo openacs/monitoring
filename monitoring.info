@@ -19,7 +19,7 @@
         <vendor url="http://www.openacs.org/">OpenACS</vendor>
         <description format="text/html">The monitoring apps from ACS 3.4.x /admin/monitoring directory.  Includes Cassandracle, Watchdog, etc.</description>
 
-        <requires url="acs-kernel" version="4.0"/>
+        <requires url="acs-kernel" version="4.6.2"/>
 
         <files>
             <file type="shell" path="bin/aolserver-errors.pl"/>

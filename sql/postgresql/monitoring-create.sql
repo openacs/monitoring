@@ -29,7 +29,7 @@ create sequence ad_monitoring_top_top_id start 1;
 create table ad_monitoring_top (
     top_id                      integer
                                 constraint ad_mntr_top_id_pk primary key,
-    timestamp                   timestamp default current_timestamp,
+    timestamp                   timestamptz default current_timestamp,
     -- denormalization: an indexable column for fast time comparisons.
     timehour                    numeric(2),
     -- the three load averages taken from uptime/top
@@ -105,7 +105,7 @@ create table ad_monitoring_tables_estimated (
     last_percent_estimated      integer,
     --Do we actually want to run this?
     enabled_p                   boolean,
-    last_estimated              timestamp
+    last_estimated              timestamptz
 ); 
 
 --Sequence for above table
