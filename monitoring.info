@@ -9,7 +9,6 @@
     <version name="4.0.0a" url="http://www.arsdigita.com/acs-repository/download/apm/monitoring-4.0.0a.apm">
     <database-support>
         <database>oracle</database>
-        <database>postgresql</database>
     </database-support>
         <owner url="mailto:jbank@arsdigita.com">Joseph Bank</owner>
         <summary>Monitoring apps from ACS 3.4.x</summary>
