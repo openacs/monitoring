@@ -14,7 +14,7 @@
 <partialquery name="hour_correction">      
     <querytext>
 
-        + (24 - (:end_time ::integer - $current_hour ::integer)) / 24
+        + (interval '24 hours' - (interval '$end_time hours' - interval '$current_hour hours')) 
 
     </querytext>
 </partialquery>
@@ -22,7 +22,7 @@
 <partialquery name="time_clause_2">      
     <querytext>
 
-        and (timestamp + :n_days ::integer $hour_correction) > current_timestamp
+        and (timestamp + interval '$n_days days' $hour_correction) > current_timestamp
 
     </querytext>
 </partialquery>
