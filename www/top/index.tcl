@@ -185,9 +185,10 @@ append page_content "
 "
 
 set top_location [ad_parameter -package_id [monitoring_pkg_id] TopLocation monitoring "/usr/local/bin/top"]
+set top_options [ad_parameter -package_id [monitoring_pkg_id] TopOptions monitoring "-bn 1"]
 
 if { [string match $showtop "t"] } {
-    if [catch { set top_output [exec $top_location] } errmsg] {
+    if [catch { set top_output [exec $top_location $top_options] } errmsg] {
         # couldn't exec top at TopLocation
         if { ![file exists $top_location] } {
         ad_return_error "top not found" "

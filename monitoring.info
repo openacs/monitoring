@@ -86,7 +86,7 @@
             <file type="content_page" path="www/watchdog/index.tcl"/>
         </files>
         <parameters>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TopOptions"  default="-b -n 1" description="Options to use with top on your OS" section_name="monitoring"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TopOptions"  default="-bn 1" description="Options to use with top on your OS" section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PersontoNotify"  description="Person to notify about watchdog (default to system owner if blank)" section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="WatchDogFrequency"  default="300" description="Frequency to run watchdog in minutes." section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="WatchDogParser"  description="Program to parse errors for watchdog (leave blank to use default program)" section_name="monitoring"/>

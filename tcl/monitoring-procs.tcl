@@ -56,8 +56,8 @@ ad_proc ad_monitor_top {} {
     set proc_var_list [list pid username threads priority nice proc_size \
                        resident_memory state cpu_total_time cpu_pct command]
     # location of the desired top function
-    set top_location [ad_parameter -package_id [monitoring_pkg_id] TopLocation monitoring]
-    set top_options [ad_parameter -package_id [monitoring_pkg_id] TopOptions monitoring]
+    set top_location [ad_parameter -package_id [monitoring_pkg_id] TopLocation monitoring "/usr/local/bin/top"]
+    set top_options [ad_parameter -package_id [monitoring_pkg_id] TopOptions monitoring "-bn 1"]
     
     # make sure we have a path to top and that the file exists
     if { [empty_string_p $top_location] } {
@@ -68,9 +68,7 @@ ad_proc ad_monitor_top {} {
         return
     }
 
-    set top_command "exec $top_location $top_options"
-
-    if [catch { set top_output [eval $top_command] } errmsg] {
+    if [catch { set top_output [exec $top_location $top_options] } errmsg] {
         # couldn't exec top at TopLocation
         if { ![file exists $top_location] } {
             ns_log Error "ad_monitor_top: top not found $top_location: $errmsg"
