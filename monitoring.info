@@ -7,7 +7,7 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
 
-    <version name="4.1" url="http://openacs.org/repository/download/apm/monitoring-4.1.apm">
+    <version name="4.2" url="http://openacs.org/repository/download/apm/monitoring-4.2.apm">
     <database-support>
         <database>oracle</database>
         <database>postgresql</database>
@@ -15,10 +15,9 @@
         <owner>Joseph Bank</owner>
         <owner url="mailto:vinod@kurup.com">Vinod Kurup</owner>
         <summary>Server and database monitoring.</summary>
-        <release-date>2002-08-19</release-date>
+        <release-date>2004-03-12</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">A collection of tools for monitoring server and database health, including cassandracle (oracle monitoring), watchdog (error log monitoring).  Derived from the ACS 3.4.x /admin/monitoring tools.</description>
-
         <requires url="acs-kernel" version="4.6.2"/>
 
         <files>
@@ -87,7 +86,7 @@
         </files>
         <parameters>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TopOptions"  default="-bn1" description="Options to use with top on your OS" section_name="monitoring"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PersontoNotify"  description="Person to notify about watchdog (default to system owner if blank)" section_name="monitoring"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PersontoNotify"  description="space-delimited email list to notify about watchdog (default to system owner if blank)" section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="WatchDogFrequency"  default="300" description="Frequency to run watchdog (in minutes)" section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="WatchDogParser"  description="Program to parse errors for watchdog (leave blank to use default program)" section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumDaysToEstAllRows"  default="7" description="Number of Days to Estimate all rows." section_name="monitoring"/>
