@@ -46,7 +46,7 @@ ad_proc wd_errors {{
         set command [ad_parameter -package_id [monitoring_pkg_id] WatchDogParser monitoring $default_command]
 
         if { ![file exists $command] } {
-            ns_log Notice "Watchdog($proc_name): Can't find WatchDogParser: $command doesn't exist" 
+            ns_log Error "Watchdog($proc_name): Can't find WatchDogParser: $command doesn't exist" 
         } else {
             # This has been changed from the previous version's concat
             # because it did not work.  Some quick testing
@@ -94,11 +94,11 @@ ad_proc wd_mail_errors {} "" {
     set proc_name {wd_mail_errors}
     
     set num_minutes [wd_email_frequency]   
-    ns_log Notice "Watchdog($proc_name): Looking for errors..."
+    ns_log Debug "Watchdog($proc_name): Looking for errors..."
     set errors [wd_errors -num_minutes $num_minutes]
     
     if {[string length $errors] > 50} {
-        ns_log Notice "Watchdog($proc_name): Errors found."
+        ns_log Debug "Watchdog($proc_name): Errors found."
         # Let's put the url to this server in the email message
         # to make it crystal clear which server is having problems
         set message "

@@ -10,7 +10,7 @@ ad_library {
 # If this is run too often, it occasionally runs into memory
 # allocation trouble when trying to exec top... 
 set top_frequency [ad_parameter -package_id [monitoring_pkg_id] TopFrequency monitoring 0]
-ns_log Notice "top_frequency is $top_frequency"
+ns_log Debug "monitoring: top_frequency is $top_frequency"
 
 if { $top_frequency > 0 } {
     set top_frequency_in_seconds [expr 60 * $top_frequency]

@@ -94,13 +94,11 @@ ad_proc ad_monitor_top {} {
             #compress multiple spaces
             regsub -all {[ ]+} [string trim $line] " " line    
             set proc_list [split $line]
-            ns_log Notice "line=$line"
 
             #skip blank lines
             if { [llength $proc_list] < 2 } { continue } 
             if { [llength $proc_list] < 11 } { 
-                ns_log Notice "skipping top process line: 
-                     element list shorter than variable list."
+                ns_log Debug "skipping top process line: $line\nelement list shorter than variable list."
                 continue 
             }
         
@@ -137,7 +135,6 @@ ad_proc ad_monitor_top {} {
             continue   
 
         } elseif { [regexp -nocase {(.*PID.USER.*)} $line match top_header] } {
-            ns_log notice "vk1"
             ## this is the start of proc info lines
             incr procflag
 
@@ -248,7 +245,7 @@ ad_proc ad_monitoring_analyze_tables {} {
 
     # Are we even doing this?
     if {[ad_parameter -package_id [monitoring_pkg_id] AutoAnalyzeP monitoring 0]==0} {
-        ns_log notice "ad_monitoring_analyze_tables: Not Analyzing Tables"
+        ns_log debug "ad_monitoring_analyze_tables: Not Analyzing Tables"
         return
     }
     
@@ -297,7 +294,7 @@ ad_proc ad_monitoring_analyze_tables {} {
     
         # for some reason this failed.. probably cause the table doesn't exists
         # anymore
-        ns_log notice "Analyzing $table_name.."
+        ns_log debug "Analyzing $table_name.."
         if {[catch {db_dml table_analyze $execstr} errmsg]} {
             # Look up the table in user_tables
             if { ![db_table_exists $table_name] } {

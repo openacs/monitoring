@@ -27,7 +27,7 @@ if { ![nsv_get . wd_installed_p] } {
             ad_schedule_proc -once t 0 {wd_mail_errors}
             
             ad_schedule_proc [expr 60 * $check_frequency] {wd_mail_errors}
-            ns_log Notice "Scheduled watchdog to run every '$check_frequency' minutes."
+            ns_log Notice "Watchdog: wd_mail_errors scheduled to run every $check_frequency minutes."
         }
         nsv_set . wd_installed_p 1
     }
