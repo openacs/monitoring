@@ -5,7 +5,7 @@ ad_page_contract {
     2) recent database queries that have resulted in more than 100 disk reads.
     This can help identify queries that are causing performance problems.
 
-    @cvs-id pct-large-table-scans.tcl,v 3.1.2.5 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

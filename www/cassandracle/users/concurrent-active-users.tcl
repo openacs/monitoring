@@ -4,7 +4,7 @@ ad_page_contract {
     From an Oracle license point of view, how many users are on the system now 
     and how does this compare to the limits? 
 
-    @cvs-id concurrent-active-users.tcl,v 3.1.2.4 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

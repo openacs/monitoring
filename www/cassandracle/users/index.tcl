@@ -3,7 +3,7 @@
 ad_page_contract {
     Displays what we want to know for a database user:
     info about a session, info about ownership, space usage
-    @cvs-id index.tcl,v 3.2.2.2 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

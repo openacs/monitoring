@@ -1,7 +1,7 @@
 ad_page_contract {
     Displays options for monitoring database performance.
 
-    @cvs-id index.tcl,v 3.2.2.2 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

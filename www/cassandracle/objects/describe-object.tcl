@@ -3,7 +3,7 @@
 ad_page_contract {
     Does the same query as the "DESCRIBE" command in SQL*PLUS to display information
     about any object.
-    @cvs-id describe-object.tcl,v 3.0.12.5 2000/07/21 03:57:39 ron Exp
+    @cvs-id $Id$
 } {
     object_name
 }

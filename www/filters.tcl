@@ -4,7 +4,7 @@ ad_page_contract {
     Displays a list of filter procs present on the web server.
 
     @author        Jon Salz <jsalz@mit.edu>
-    @cvs-id        filters.tcl,v 3.4.2.3 2000/07/21 03:57:37 ron Exp
+    @cvs-id $Id$
 } {
     {match_method "GET"}
     {match_path "(any)"}

@@ -6,7 +6,7 @@ ad_page_contract {
 
     @author Dave Abercrombie (abe@arsdigita.com)
     @creation-date 20 October 1999
-    @cvs-id one-user-specific-objects.tcl,v 3.2.2.4 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
     object_type 
     owner

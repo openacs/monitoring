@@ -8,7 +8,7 @@ internal, then do:
     grant select on dba_jobs_running to my_oracle_user_name;
     grant select on dba_jobs         to my_oracle_user_name;
 
-    @cvs-id running-jobs.tcl,v 3.1.2.3 2000/07/21 03:57:39 ron Exp
+    @cvs-id $Id$
 } {}
 
 set page_name "Currently Running Jobs"

@@ -8,7 +8,7 @@ ad_page_contract {
            a bad variable name)
 
     @author Micheal Bryzek (mbryzek@arsdigita.com)
-    @cvs-id add-comments-2.tcl,v 3.2.2.3 2000/08/02 18:49:43 kevin Exp
+    @cvs-id $Id$
 
 } {
     object_name:notnull

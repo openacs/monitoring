@@ -3,7 +3,7 @@
 ad_page_contract {
     Show information about a particular database session.
 
-    @cvs-id one-session-info.tcl,v 3.3.2.5 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
     sid:integer     
 }

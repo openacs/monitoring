@@ -4,7 +4,7 @@ ad_page_contract {
     @author Richard Li (richardl@arsdigita.com)
     @author Dave Abercrombie (abe@arsdigita.com)
     @creation-date 14 April 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } { 
 }
 

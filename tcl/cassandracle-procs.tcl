@@ -3,7 +3,7 @@
 ad_library {
     Routines used by Cassandracle (the Oracle monitoring part of /admin/monitoring)
 
-    @cvs-id cassandracle-defs.tcl,v 3.2.2.1 2000/07/12 16:32:15 luke Exp
+    @cvs-id $Id$
 }
 
 proc cassandracle_header { page_title } {

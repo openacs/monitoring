@@ -2,7 +2,7 @@
 
 ad_page_contract {
     Displays cumulative Data Block Waits since database startup.
-    @cvs-id data-block-waits.tcl,v 3.0.12.4 2000/07/21 03:57:39 ron Exp
+    @cvs-id $Id$
 } {
 }
 

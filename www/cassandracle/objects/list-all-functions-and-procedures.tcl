@@ -5,7 +5,7 @@ ad_page_contract {
 queries Oracle for all Functions and Procedures by user.
 
     @author Michael Bryzek (mbryzek@arsdigita.com)
-    @cvs-id list-all-functions-and-procedures.tcl,v 3.3.2.6 2000/08/02 18:55:04 kevin Exp
+    @cvs-id $Id$
 
 } {
 

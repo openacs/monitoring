@@ -2,7 +2,7 @@
 
 ad_page_contract {
     Display source code for a PL/SQL function or procedure.
-    @cvs-id detail-function-or-procedure.tcl,v 3.2.2.5 2000/07/21 03:57:39 ron Exp
+    @cvs-id $Id$
 } {
     object_name
     owner

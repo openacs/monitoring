@@ -5,7 +5,7 @@ ad_page_contract {
     Stepping stone to the individual Oracle status queries
 
     @author Jin Choi (jsc@arsdigita.com)
-    @cvs-id index.tcl,v 3.2.6.4 2000/07/25 11:27:56 ron Exp
+    @cvs-id $Id$
 
 } { }
 

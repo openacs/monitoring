@@ -3,7 +3,7 @@
 ad_page_contract {
     Displays summary disk space usage information for all tablespaces.
 
-    @cvs-id space-usage.tcl,v 3.0.12.4 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

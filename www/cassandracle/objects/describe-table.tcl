@@ -4,7 +4,7 @@ ad_page_contract {
     Displays info about objects of a particular type owned by a particular user.
     Called from ../users/one-user-specific-objects.tcl
 
-    @cvs-id describe-table.tcl,v 3.2.2.4 2000/07/21 03:57:39 ron Exp
+    @cvs-id $Id$
 } {
     object_name
 }

@@ -5,7 +5,7 @@ ad_page_contract {
 
     @author Dave Abercrombie (abe@arsdigita.com)
     @creation-date 08 December 1999
-    @cvs-id sessions-info.tcl,v 3.3.2.4 2000/07/21 03:57:41 ron Exp
+    @cvs-id $Id$
 } {
 }
 

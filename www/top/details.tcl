@@ -4,7 +4,7 @@ ad_page_contract {
     Reports details from saved top statistics
 
     @author sklein@arsdigita.com 
-    @cvs-id details.tcl,v 1.8.2.4 2000/08/02 19:11:54 kevin Exp
+    @cvs-id $Id$
 
     @param  n_days        the # of days over which to average data 
     @param  start_time    start time on a given day

@@ -2,7 +2,7 @@
 
 ad_page_contract {
     Display constraints that have been defined by one user
-    @cvs-id space-usage.tcl,v 3.1.2.5 2000/07/21 03:57:41 ron Exp
+    @cvs-id $Id$
 } {
 }
 

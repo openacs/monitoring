@@ -8,7 +8,7 @@ ad_page_contract {
     @param object_name encodes the owner and table name as owner.table_name
 
     @author Ron Henderson (ron@arsdigita.com)
-    @cvs-id add-comments.tcl,v 3.2.2.2 2000/08/02 18:39:39 kevin Exp
+    @cvs-id $Id$
 } {
     object_name:notnull
 }

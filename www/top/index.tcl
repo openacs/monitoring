@@ -11,7 +11,8 @@ ad_page_contract {
     @param showtop       show the top of the moment? (boolean)
     @param min_cpu_pct   procs with CPU below this aren't displayed
 
-    @authors       sklein@arsdigita.com, mbryzek@arsdigita.com
+    @author sklein@arsdigita.com
+    @author mbryzek@arsdigita.com
     @creation-date May 2000
     @cvs-id        $Id$
 } {

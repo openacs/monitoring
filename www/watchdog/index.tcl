@@ -1,7 +1,7 @@
 # /admin/monitoring/watchdog/index.tcl
 
 ad_page_contract {
-    @cvs-id index.tcl,v 3.1.6.6 2000/07/31 21:54:31 luke Exp
+    @cvs-id $Id$
 } {
     kbytes:integer,optional
     num_minutes:integer,optional

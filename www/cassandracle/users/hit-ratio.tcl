@@ -3,7 +3,7 @@
 ad_page_contract {
     Display constraints that have been defined by one user
 
-    @cvs-id hit-ratio.tcl,v 3.1.2.4 2000/07/21 03:57:40 ron Exp
+    @cvs-id $Id$
 } {
 }
 

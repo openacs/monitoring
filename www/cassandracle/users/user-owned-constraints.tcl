@@ -5,7 +5,7 @@ ad_page_contract {
 
     @author Dave Abercrombie (abe@arsdigita.com)
     @creation-date 29 January 2000
-    @cvs-id user-owned-constraints.tcl,v 3.3.2.3 2000/07/21 03:57:41 ron Exp
+    @cvs-id $Id$
 } {
 }
 
