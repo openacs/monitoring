@@ -37,32 +37,6 @@ this program to catch.
 
 "
 
-if [util_aolserver_2_p] {
-    append whole_page "
-AOLserver says that the max number of threads spawned since server
-startup is [ns_totalstats HWM-threads].  The max threads since the
-last interval reset (every 5 minutes or so by default):
-[ns_intervalstats HWM-threads].  This final number is probably the
-best estimate of current server activity.
-
-<p>
-"
-}
-
-if [util_aolserver_2_p] {
-    # run standard Unix uptime command to get load average (crude measure of 
-    # system health)
-    set uptime_output [exec /usr/bin/uptime]
-    append whole_page "
-
-Here's what uptime has to say about the box:
-
-<pre>
-$uptime_output
-</pre>
-"
-}
-
 append whole_page "
 
 <table>
