@@ -4,7 +4,7 @@ ad_page_contract {
     Displays some basic information about this installation of AOLServer:
     IP Address, System Name, and System Owner.
 
-    @cvs-id index.tcl,v 3.1.2.2 2000/07/21 03:57:41 ron Exp
+    @cvs-id $Id$
 } {
 }
 

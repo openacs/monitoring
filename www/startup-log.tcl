@@ -4,7 +4,7 @@ ad_page_contract {
     Displays a log (between the "AOLserver starting" and "AOLserver running" lines).
 
     @author Jon Salz (jsalz@mit.edu)
-    @cvs-id startup-log.tcl,v 3.2.2.2 2000/07/21 03:57:38 ron Exp
+    @cvs-id $Id$
 } {
     { errors_only_p 1 }
 }
@@ -12,9 +12,9 @@ ad_page_contract {
 set dimensional_list {
     {
         errors_only_p "Show:" 1 {
-	    { 1 "Errors Only" }
-	    { 0 "All Events" }
-	}
+            { 1 "Errors Only" }
+            { 0 "All Events" }
+        }
     }
 }
 
@@ -43,7 +43,7 @@ if { [nsv_exists acs_properties error_log_start_offset] } {
     # last "AOLserver/xxx starting" line.
     set offset [expr { $initial_error_log_length - 16384 }]
     if { $offset < 0 } {
-	set offset 0
+        set offset 0
     }
 
     set last_line $offset
@@ -51,15 +51,15 @@ if { [nsv_exists acs_properties error_log_start_offset] } {
     seek $error_log $offset start
     
     while { [gets $error_log line] >= 0 } {
-	if { [regexp {AOLserver/[^ ]+ starting} $line] } {
-	    set start_offset $last_line
-	}
-	set last_line [tell $error_log]
-	if { $last_line > $initial_error_log_length } {
-	    break
-	}
+        if { [regexp {AOLserver/[^ ]+ starting} $line] } {
+            set start_offset $last_line
+        }
+        set last_line [tell $error_log]
+        if { $last_line > $initial_error_log_length } {
+            break
+        }
     }
-
+    
     nsv_set acs_properties error_log_start_offset $start_offset
 }
 
@@ -68,26 +68,26 @@ seek $error_log $start_offset start
 set error_p 0
 while { [gets $error_log line] >= 0 } {
     if { [regexp {^\[[^\]]+\]\[[^\]]+\]\[[^\]]+\] ([^:]+)} $line "" status] } {
-	if { [string equal $status "Warning"] || [string equal $status "Error"] } {
-	    set error_p 1
-	} else {
-	    set error_p 0
-	}
+        if { [string equal $status "Warning"] || [string equal $status "Error"] } {
+            set error_p 1
+        } else {
+            set error_p 0
+        }
     }
     if { $error_p } {
-	if { $errors_only_p } {
-	    append out "[ns_quotehtml $line]\n"
-	} else {
-	    append out "<font color=red>[ns_quotehtml $line]</font>\n"
-	}
+        if { $errors_only_p } {
+            append out "[ns_quotehtml $line]\n"
+        } else {
+            append out "<font color=red>[ns_quotehtml $line]</font>\n"
+        }
     } elseif { !$errors_only_p } {
-	append out "[ns_quotehtml $line]\n"
+        append out "[ns_quotehtml $line]\n"
     }
     if { [regexp {AOLserver/[^ ]+ running} $line] } {
-	break
+        break
     }
     if { [tell $error_log] > $error_log_length } {
-	break
+        break
     }
 }
 close $error_log

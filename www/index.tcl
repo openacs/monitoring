@@ -1,21 +1,19 @@
 
 ad_page_contract {
-    @cvs-id index.tcl,v 3.5.2.5 2000/08/23 23:49:54 mbryzek Exp
+    Show all the links to Monitoring sub-modules
+    @cvs-id $Id$
 } {}
 
 set dev_support_link ""
 set dev_support_id [apm_package_id_from_key "acs-developer-support"]
 if { $dev_support_id != 0 } {
-    set dev_support_url [db_string get_package_url {
-        select site_node.url(s.node_id) as url
-        from site_nodes s
-        where s.object_id = :dev_support_id
-        and rownum = 1
-    } -default ""]
+    set dev_support_url [db_string get_package_url { *SQL* } -default ""]
     if { ![empty_string_p $dev_support_url] } {
         set dev_support_link "<li><a href=\"$dev_support_url\">Developer Support Request Information</a>"
     }
 }
+
+# vinodk: FIXME: show only those links specific to the running database
 
 doc_return 200 text/html "[ad_header "Monitoring  [ad_system_name]"]
 

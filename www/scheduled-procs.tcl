@@ -4,7 +4,7 @@ ad_page_contract {
     Displays a list of scheduled procedures.
 
     @author Jon Salz (jsalz@mit.edu)
-    @cvs-id scheduled-procs.tcl,v 3.2.10.2 2000/07/21 03:57:38 ron Exp
+    @cvs-id $Id$
 } {
 }
 
@@ -40,11 +40,11 @@ proc ad_scheduled_procs_compare { a b } {
     set next_run_a [expr { [lindex $a 5] + [lindex $a 2] }]
     set next_run_b [expr { [lindex $b 5] + [lindex $b 2] }]
     if { $next_run_a < $next_run_b } {
-	return -1
+    return -1
     } elseif { $next_run_a > $next_run_b } {
-	return 1
+    return 1
     } else {
-	return [string compare [lindex $a 3] [lindex $b 3]]
+    return [string compare [lindex $a 3] [lindex $b 3]]
     }
 }
 
@@ -58,7 +58,7 @@ foreach proc_info [lsort -command ad_scheduled_procs_compare [nsv_get ad_procs .
     set proc [lindex $proc_info 3]
     set args [lindex $proc_info 4]
     if { $args == "" } {
-	set args "&nbsp;"
+    set args "&nbsp;"
     }
     set time [lindex $proc_info 5]
     set count [lindex $proc_info 6]
@@ -69,15 +69,15 @@ foreach proc_info [lsort -command ad_scheduled_procs_compare [nsv_get ad_procs .
 
     append page_content "<tr>"
     foreach name { proc args } {
-	append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
+    append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
     }
     append page_content "<td bgcolor=$bgcolor align=right>$count</td>"
     foreach name { last_run next_run } {
-	append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
+    append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
     }
     append page_content "<td bgcolor=$bgcolor align=right>$next_run_in</td>"
     foreach name { thread once debug } {
-	append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
+    append page_content "<td bgcolor=$bgcolor>[set $name]</td>"
     }
     append page_content "</tr>\n"
 }

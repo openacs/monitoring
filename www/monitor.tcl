@@ -3,9 +3,10 @@
 ad_page_contract {
     @author        Philip Greenspun <philg@mit.edu>
     @creation-date 
-    @cvs-id        monitor.tcl,v 3.1.2.3 2000/08/05 16:15:53 luke Exp
-} {}
+    @cvs-id        $Id$
+} {
 
+}
 
 set connections [ns_server active]
 
@@ -71,7 +72,6 @@ append whole_page "
 foreach connection $connections {
     append whole_page "<tr><td>[join $connection <td>]\n"
 }
-
 
 append whole_page "</table>
 [ad_footer]

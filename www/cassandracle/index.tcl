@@ -17,7 +17,7 @@ if { $errno != 0 } {
 <li> Log into Oracle via sqlplus
 <li> connect internal;
 <li> @ [acs_package_root_dir monitoring]/sql/cassandracle.sql
-<li> grant ad_cassandracle to  [ns_config  "ns/db/pool/main" User];
+<li> grant ad_cassandracle to  [ns_config  "ns/db/pool/main" User][ns_config  "ns/db/pool/pool1" User];
 <li> restart-aolserver [ns_info server]
 </ul>"
     return

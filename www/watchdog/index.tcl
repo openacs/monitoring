@@ -13,7 +13,7 @@ if { [info exists num_minutes] && ![empty_string_p $num_minutes] } {
 } else {
     set num_minutes ""
     if { ![info exists kbytes] || [empty_string_p $kbytes] } {
-	set kbytes 200
+    set kbytes 200
     }
     set bytes [expr $kbytes * 1000]
 }
@@ -36,7 +36,7 @@ Errors from the last <INPUT NAME=num_minutes SIZE=4 value=\"$num_minutes\"> minu
 </FORM>
 
 <PRE>
-[ns_quotehtml [wd_errors "$num_minutes" "$bytes"]]
+[ns_quotehtml [wd_errors -external_parser_p 1 -num_minutes "$num_minutes" -num_bytes "$bytes"]]
 </PRE>
 
 [ad_admin_footer]

@@ -47,14 +47,14 @@ if { [lsearch -exact [list command username pid hour day] $key] == -1 } {
 
 set top_system_avg_table_def {
     {time  "hour" {} \
-	    {<td><a href="details?key=hour&value=[ns_urlencode $time]">$time</a></td>}}
+        {<td><a href="details?key=hour&value=[ns_urlencode $time]">$time</a></td>}}
     {load_average "load" {} {}}
     {memory_free_average "free mem" {} \
-	    {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
     {memory_swap_free_average "free swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
     {memory_swap_in_use_average "used swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
     {count "count" {} {}}
 }  
 
@@ -62,22 +62,22 @@ set top_system_table_def {
     {time  "time" {} {}}
     {load_average "load" {} {}}
     {memory_free_average "free mem" {} \
-	    {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
     {memory_swap_free_average "free swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
     {memory_swap_in_use_average "used swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
+        {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
 }   
 
 set top_proc_table_def {
     {time "Time" {} {}}
     {threads "Thr" {} {}}
     {command "Command" {} \
-	    {<td align=right><a href="details?key=command&value=[ns_urlencode $command]">$command</a></td>}}
+        {<td align=right><a href="details?key=command&value=[ns_urlencode $command]">$command</a></td>}}
     {username "Username" {} \
-	    {<td><a href="details?key=username&value=$username">$username</a></td>}}
+        {<td><a href="details?key=username&value=$username">$username</a></td>}}
     {pid "PID" {} \
-	    {<td><a href="details?key=pid&value=$pid">$pid</a></td>}}
+        {<td><a href="details?key=pid&value=$pid">$pid</a></td>}}
     {cpu_pct "CPU" {} {}}
     {count "Cnt" {} {}}
 }  
@@ -95,27 +95,26 @@ if { [string compare $key "day"] } {
     set n_days "all"
 }
 if { ![string equal $key "hour"] } {
-    set time_clause     "timehour >= :start_time
-                     and timehour < :end_time"
-
+    set time_clause [db_map time_clause_1]
+    
     if { [string compare $n_days "all"] != 0 } {
-	# Need to multiply n_days by ($end_time-to_char(sysdate,'HH24'))/24 
-	# for accurate current snapshots.  That is, displaying back in time
-	# needs to be relative to the selected end_time, not to sysdate.
-	set current_hour [db_string mon_current_hour \
-	    "select to_char(sysdate,'HH24') from dual"]
-	if { $end_time > $current_hour } {
-	    # we correct for the last day in the query if the end time
-	    # is later than the current time.
-	    # TODO: need to add this into the query?
-	    set hour_correction " + (24 - (:end_time - :current_hour)) / 24 "
-	} else {
-	    set hour_correction ""
-	}
+        # Need to multiply n_days by ($end_time-to_char(sysdate,'HH24'))/24 
+        # for accurate current snapshots.  That is, displaying back in time
+        # needs to be relative to the selected end_time, not to sysdate.
+        set current_hour [db_string mon_current_hour { *SQL* } ]
+
+        if { $end_time > $current_hour } {
+            # we correct for the last day in the query if the end time
+            # is later than the current time.
+            # TODO: need to add this into the query?
+            set hour_correction [db_map hour_correction]
+        } else {
+            set hour_correction ""
+        }
     }
 } else { 
     # we're looking at a specific hour of a specific day, no need to filter
-    set time_clause "1 = 1" 
+    set time_clause "where 1 = 1" 
 }
 
 ### 2. Create the sql to fill the ad_tables, given the detailed constraint.
@@ -124,22 +123,25 @@ set proc_group_by "to_char(timestamp, 'MM/DD HH24')"
 set proc_time_sql "to_char(timestamp, 'MM/DD HH24') || ':00' as time"
 
 switch $key {
-    day  { set details_clause "to_char(timestamp, 'Mon DD') = :value"  
-           set system_time_sql  "to_char(timestamp, 'MM/DD HH24') || ':00' as time"
-           set system_group_by  "to_char(timestamp, 'MM/DD HH24')"
+    day  { 
+        set details_clause "to_char(timestamp, 'Mon DD') = :value"  
+        set system_time_sql  "to_char(timestamp, 'MM/DD HH24') || ':00' as time"
+        set system_group_by  "to_char(timestamp, 'MM/DD HH24')"
     }
-    hour { set details_clause  "to_char(timestamp, 'MM/DD HH24') || ':00' = :value"
-           set system_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
-           set system_group_by "timestamp"
-           # if you want to show every single proc:
-           if {[string match $showall "t"]} {
-	       set proc_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
-	       set proc_group_by "timestamp"
-	   }      
+    hour { 
+        set details_clause  "to_char(timestamp, 'MM/DD HH24') || ':00' = :value"
+        set system_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
+        set system_group_by "timestamp"
+        # if you want to show every single proc:
+        if {[string match $showall "t"]} {
+            set proc_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
+            set proc_group_by "timestamp"
+        }      
     }
-    default { set details_clause "$key = :value"
-	   set proc_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
-	   set proc_group_by "timestamp"
+    default { 
+        set details_clause "$key = :value"
+        set proc_time_sql "to_char(timestamp, 'MM/DD HH24:MI') as time"
+        set proc_group_by "timestamp"
     }
 }
 
@@ -148,37 +150,12 @@ switch $key {
 ## the $xxx_group_by clause groups either by hour or by second
 ## (i.e., not at all).  
 
-set proc_query "
-  select pid, command, username, 
-         $proc_time_sql,
-         count(*) as count,
-         round(avg(threads),0) as threads, 
-         round(avg(to_number(rtrim(cpu_pct, '%'))),2) as cpu_pct
-    from (select * from ad_monitoring_top_proc
-           where to_number(rtrim(cpu_pct, '%')) > :min_cpu_pct) p, 
-         (select * from ad_monitoring_top where $time_clause) t
-    where p.top_id = t.top_id
-      and $details_clause
-   group by pid, command, username, $proc_group_by
-   [ad_order_by_from_sort_spec $orderby $top_proc_table_def]
-"
+set proc_query [db_map proc_query]
 
 if { [string match $key "hour"] || [string match $key "day"] } {
-    set load_and_memory_averages_sql "round(nvl(avg(load_avg_1), 0),  2) as load_average, 
-         round(nvl(avg(memory_free),0), -2) as memory_free_average, 
-         round(nvl(avg(memory_swap_free),  0), -2) as memory_swap_free_average,
-         round(nvl(avg(memory_swap_in_use),0), -2) as memory_swap_in_use_average"
+    set load_and_memory_averages_sql [db_map load_and_memory_averages_sql]
 
-    set system_query "
-     select $load_and_memory_averages_sql,
-            count(*) as count,
-            $system_time_sql
-       from ad_monitoring_top
-      where $time_clause  
-        and $details_clause
-      group by $system_group_by
-      [ad_order_by_from_sort_spec $orderbysystem $top_system_table_def]
-    "
+    set system_query [db_map system_query]
 }
 
 ### Begin returning the page.
@@ -201,9 +178,9 @@ append page_content "
 set n_days_list [list]
 foreach n [list 1 2 3 7 14 31 all] {
     if { $n == $n_days } {
-	lappend n_days_list "<b>$n</b>"
+        lappend n_days_list "<b>$n</b>"
     } else {
-	lappend n_days_list "<a href=details?n_days=$n&[export_url_vars\
+        lappend n_days_list "<a href=details?n_days=$n&[export_url_vars\
                            key value start_time end_time orderby orderbysystem min_cpu_pct]>$n</a>"
     }
 }
@@ -211,10 +188,14 @@ foreach n [list 1 2 3 7 14 31 all] {
 set start_select ""
 set end_select ""
 for { set i 0 } { $i < 25 } { incr i } {
-    if { $i == 0 || $i == 24} { set text "Midnight"
-     } elseif { $i == 12 } { set text "Noon"
-     } elseif { $i > 12 } {  set text "[expr {$i - 12}] pm"
-     } else {                set text "$i am"
+    if { $i == 0 || $i == 24} { 
+        set text "Midnight"
+    } elseif { $i == 12 } { 
+        set text "Noon"
+    } elseif { $i > 12 } {  
+        set text "[expr {$i - 12}] pm"
+    } else {                
+        set text "$i am"
     }
 
     append start_select " <option value=\"$i\"[if {$i == $start_time} {
@@ -227,7 +208,7 @@ for { set i 0 } { $i < 25 } { incr i } {
 set cpu_select ""
 foreach percent {0.5 0.1 0.01 0 1 2 5 10 20 30 40 50 75} {
     append cpu_select " <option value=\"$percent\"[if {$percent == $min_cpu_pct} {
-	set foo " selected"}]> $percent%\n"
+    set foo " selected"}]> $percent%\n"
 }
 
 # This form only includes the time-selection drop-down menus,
@@ -261,36 +242,29 @@ append page_content "<form method=get action=details>
 set top_location [ad_parameter -package_id [monitoring_pkg_id] TopLocation monitoring "/usr/local/bin/top"] 
 
 if { [string match $showtop "t"] } {
-  if [catch { set top_output [exec $top_location] } errmsg] {
-	# couldn't exec top at TopLocation
-	if { ![file exists $top_location] } {
-		ad_return_error "top not found" "
-The top procedure could not be found at $top_location:
-    <blockquote><pre> $errmsg </pre></blockquote>"
-		return
-	}
+    if [catch { set top_output [exec $top_location] } errmsg] {
+        # couldn't exec top at TopLocation
+        if { ![file exists $top_location] } {
+            ad_return_error "top not found" "
+            The top procedure could not be found at $top_location:
+            <blockquote><pre> $errmsg </pre></blockquote>"
+            return
+        }
 
-  	ad_return_error "insufficient top permissions" "
-The top procedure at $top_location cannot be run:
-    <blockquote><pre> $errmsg </pre></blockquote>"
-	return
-  }
-  # top execution went ok
-  append page_content "<h4>Current top output on this machine</h4>
-     <pre>$top_output</pre>
-     [ad_admin_footer]"
-  doc_return 200 text/html $page_content
-  return
+        ad_return_error "insufficient top permissions" "
+        The top procedure at $top_location cannot be run:
+        <blockquote><pre> $errmsg </pre></blockquote>"
+        return
+    }
+    # top execution went ok
+    append page_content "<h4>Current top output on this machine</h4>
+    <pre>$top_output</pre>
+    [ad_admin_footer]"
+    doc_return 200 text/html $page_content
+    return
 }
 
-set number_rows [db_string mon_top_entries \
-     "select count(*) 
-        from (select * from ad_monitoring_top  where $time_clause) t, 
-             (select * from ad_monitoring_top_proc 
-               where to_number(rtrim(cpu_pct, '%')) > :min_cpu_pct) p
-      where t.top_id = p.top_id
-        and $details_clause      
-     "]
+set number_rows [db_string mon_top_entries { *SQL* } ]
 
 if { $number_rows == 0 } {
     append page_content "
@@ -298,8 +272,8 @@ if { $number_rows == 0 } {
          <ul>
          <li>time clause : <font size=-1>$time_clause</font>;
          <li>details : <font size=-1>$details_clause</font> 
-	 <li>over the past $n_days days
-	</ul>
+     <li>over the past $n_days days
+    </ul>
        [ad_admin_footer]"
     doc_return 200 text/html $page_content
     return
@@ -311,18 +285,18 @@ if { $number_rows == 0 } {
 # the right orderby variable
 if { [string match $key "hour"] } {
     append page_content "[ad_table -Tsuffix system -bind $bind_vars \
-	    unused $system_query $top_system_table_def]
+        unused $system_query $top_system_table_def]
       <hr width=70%>
     "
 } elseif { [string match $key "day"] } {
     append page_content "[ad_table -Tsuffix system -bind $bind_vars \
-	    unused $system_query $top_system_avg_table_def]
+        unused $system_query $top_system_avg_table_def]
       <hr width=70%>
     "
 }
 
 append page_content "[ad_table -bind $bind_vars \
-	unused $proc_query $top_proc_table_def] <p> 
+    unused $proc_query $top_proc_table_def] <p> 
 
 </table>  [ad_admin_footer]"
 

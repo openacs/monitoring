@@ -3,7 +3,7 @@
 ad_page_contract {
     Displays reports from saved top statistics.
 
-    @param n_days     the # of days over which to average
+    @param n_days     the number of days over which to average
     @param start_time taken between the given start
     @param end_time   and end times on each day
     @param orderby    the field by which to order the procedure-specific data
@@ -13,7 +13,7 @@ ad_page_contract {
 
     @authors       sklein@arsdigita.com, mbryzek@arsdigita.com
     @creation-date May 2000
-    @cvs-id        index.tcl,v 1.18.2.4 2000/08/02 19:04:34 kevin Exp
+    @cvs-id        $Id$
 } {
     {n_days 1}
     {start_time "00"}
@@ -31,25 +31,25 @@ set top_proc_avg_table_def {
     {timestamp "Hour" {} {}}
     {threads "Thr" {} {}}
     {command "Command" {} \
-	    {<td align=right><a href="details?key=command&value=[ad_urlencode $command]">$command</a></td>}}
+            {<td align=right><a href="details?key=command&value=[ad_urlencode $command]">$command</a></td>}}
     {username "Username" {} \
-	    {<td><a href="details?key=username&value=$username">$username</a></td>}}
+            {<td><a href="details?key=username&value=$username">$username</a></td>}}
     {pid "PID" {} \
-	    {<td><a href="details?key=pid&value=$pid">$pid</a></td>}}
+            {<td><a href="details?key=pid&value=$pid">$pid</a></td>}}
     {cpu_pct "CPU" {} {}}
     {count "Cnt" {} {}}
 }  
 
 set top_system_avg_table_def {
     {day  "date" {} \
-	    {<td><a href="details?key=day&value=[ad_urlencode $day]">$day</a></td>}}
+            {<td><a href="details?key=day&value=[ad_urlencode $day]">$day</a></td>}}
     {load_average "load" {} {}}
     {memory_free_average "free mem" {} \
-	    {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
+            {<td>[ad_monitor_format_kb $memory_free_average]</td>}}
     {memory_swap_free_average "free swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
+            {<td>[ad_monitor_format_kb $memory_swap_free_average]</td>}}
     {memory_swap_in_use_average "used swap" {} \
-	    {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
+            {<td>[ad_monitor_format_kb $memory_swap_in_use_average]</td>}}
     {count "count" {} {}}
 }  
 
@@ -62,26 +62,23 @@ set bind_vars [ad_tcl_vars_to_ns_set start_time end_time min_cpu_pct n_days]
 ##
 ## 1. Create the sql to filter by date and time
 
-set time_clause "where timehour >= :start_time
-                   and timehour < :end_time"
-
-if { [string compare $n_days "all"] != 0 } {
+set time_clause [db_map time_clause_1]
+if { ![string equal $n_days "all"] } {
     # Need to multiply n_days by ($end_time-to_char(sysdate,'HH24'))/24 to 
     # get accurate current snapshots.  That is, displaying back in time
     # needs to be relative to the selected end_time, not to sysdate.
-
-    set current_hour [db_string mon_current_hour \
-	    "select to_char(sysdate,'HH24') from dual"]
+    
+    set current_hour [db_string mon_current_hour { *SQL* } ]
 
     if { $end_time > $current_hour } {
-	# we correct for the last day in the query if the end time
-	# is later than the current time.
-	set hour_correction " + (24 - (:end_time - :current_hour)) / 24 "
+        # we correct for the last day in the query if the end time
+        # is later than the current time.
+        set hour_correction [db_map hour_correction]
     } else {
-	set hour_correction ""
+        set hour_correction ""
     }
 
-    append time_clause " and (timestamp + :n_days $hour_correction) > sysdate"
+    append time_clause [db_map time_clause_2]
 }
 
 ### 2. Create the sql to fill top_proc_avg_table, grouping proc info
@@ -89,42 +86,21 @@ if { [string compare $n_days "all"] != 0 } {
 ###    (default to hour).  We need to be careful about avging over
 ###    the whole time period b/c the same pid is eventually used by 
 ###    distinct processes.
-set hour_sql "to_char(timestamp, 'MM/DD HH24') || ':00'"
-set day_sql  "to_char(timestamp, 'Mon DD')"
+set hour_sql [db_map hour_sql]
+set day_sql  [db_map day_sql]
 ## 
 
-set avg_proc_query "
-  select pid, command, username,
-         count(*) as count,
-         $hour_sql as timestamp,
-         round(avg(threads)) as threads,
-         round(avg(to_number(rtrim(cpu_pct, '%'))), 2) as cpu_pct
-    from ( select * from ad_monitoring_top $time_clause ) t, 
-         ( select * from ad_monitoring_top_proc 
-            where to_number(rtrim(cpu_pct, '%')) > :min_cpu_pct ) p
-   where p.top_id = t.top_id
-   group by pid, command, username, $hour_sql
-   [ad_order_by_from_sort_spec $orderby $top_proc_avg_table_def] 
-"
+# vinodk: FIXME below here 2002-08-17
+set avg_proc_query [db_map avg_proc_query]
+
 # [ad_table_orderby_sql $top_proc_avg_table_def $orderby "DESC"]
-set load_and_memory_averages_sql "round(nvl(avg(load_avg_1), 0),  2) as load_average, 
-         round(nvl(avg(memory_free),0), -2) as memory_free_average, 
-         round(nvl(avg(memory_swap_free),  0), -2) as memory_swap_free_average,
-         round(nvl(avg(memory_swap_in_use),0), -2) as memory_swap_in_use_average
-"
+set load_and_memory_averages_sql [db_map load_and_memory_averages_sql]
 
 ## the query to get system averages for each requested day.  This is not
 ## the only query for display in an ad_table; note that "system" is tacked 
 ## onto the end of the orderby variable [and elsewhere as regards this query].
-set avg_system_query "
-  select $load_and_memory_averages_sql,
-         count(*) as count,
-         $day_sql as day
-    from ad_monitoring_top
-         $time_clause
-   group by $day_sql
-   [ad_order_by_from_sort_spec $orderbysystem $top_system_avg_table_def] 
-"
+set avg_system_query [db_map avg_system_query]
+
 #  [ad_table_orderby_sql $top_system_avg_table_def $orderbysystem "DESC"]
 
 ### Begin returning the page.
@@ -145,22 +121,26 @@ append page_content "
 set n_days_list [list]
 foreach n [list 1 2 3 7 14 31 all] {
     if { $n == $n_days } {
-	lappend n_days_list "<b>$n</b>"
+        lappend n_days_list "<b>$n</b>"
     } else {
-	lappend n_days_list "<a href=index?n_days=$n&[export_ns_set_vars url [list n_days showtop]]>$n</a>"
+        lappend n_days_list "<a href=index?n_days=$n&[export_ns_set_vars url [list n_days showtop]]>$n</a>"
     }
 }
 
 set start_select ""
 set end_select ""
 for { set i 0 } { $i < 25 } { incr i } {
-    if { $i == 0 | $i == 24 } {         set text "Midnight"
-     } elseif { $i == 12 } { set text "Noon"
-     } elseif { $i > 12 } {  set text "[expr {$i - 12}] pm"
-     } else {                set text "$i am"
-    }
+    if { $i == 0 | $i == 24 } {         
+        set text "Midnight"
+    } elseif { $i == 12 } { 
+        set text "Noon"
+     } elseif { $i > 12 } {  
+         set text "[expr {$i - 12}] pm"
+     } else {                
+         set text "$i am"
+     }
 
-    append start_select " <option value=\"$i\"[if {$i == $start_time} {
+     append start_select " <option value=\"$i\"[if {$i == $start_time} {
            set foo " selected"}]> $text\n"
 
     append end_select   " <option value=\"$i\"[if {$i == $end_time} {
@@ -170,7 +150,7 @@ for { set i 0 } { $i < 25 } { incr i } {
 set cpu_select ""
 foreach percent {0 1 2 5 10 20 30 40 50 75} {
     append cpu_select " <option value=\"$percent\"[if {$percent == $min_cpu_pct} {
-	set foo " selected"}]> $percent%\n"
+    set foo " selected"}]> $percent%\n"
 }
 
 # This form only includes the time-selection drop-down menus,
@@ -210,15 +190,15 @@ if { [string match $showtop "t"] } {
     if [catch { set top_output [exec $top_location] } errmsg] {
         # couldn't exec top at TopLocation
         if { ![file exists $top_location] } {
-	    ad_return_error "top not found" "
-	    The top procedure could not be found at $top_location:
-	    <blockquote><pre> $errmsg </pre></blockquote>"
-	    return
+        ad_return_error "top not found" "
+        The top procedure could not be found at $top_location:
+        <blockquote><pre> $errmsg </pre></blockquote>"
+        return
         }
         
-        ad_return_error "insufficient top permissions" "
-	The top procedure at $top_location cannot be run:
-	<blockquote><pre> $errmsg </pre></blockquote>"
+        ad_return_error "top could not be run" "
+    The top procedure at $top_location cannot be run:
+    <blockquote><pre> $errmsg </pre></blockquote>"
         return  
     }
     # top execution went ok
@@ -230,7 +210,7 @@ if { [string match $showtop "t"] } {
 }
 
 set number_rows [db_string mon_top_entries \
-	         "select count(*) from ad_monitoring_top $time_clause"]
+             "select count(*) from ad_monitoring_top $time_clause"]
 
 if { $number_rows == 0 } {
     append page_content  "
@@ -242,15 +222,13 @@ if { $number_rows == 0 } {
     db_1row mon_top_load_and_memory_averages \
         "select $load_and_memory_averages_sql from ad_monitoring_top $time_clause"
 
-    set num_days [db_string num_days_for_query \
-	    "select round(max(timestamp) - min(timestamp) + 0.5) 
-                  from ad_monitoring_top $time_clause"]
+    set num_days [db_string num_days_for_query { *SQL* } ]
 
     append page_content "<h4>Overall statistics</h4>  
 
 <ul><li>[util_commify_number $number_rows] 
-  top measurement[util_decode $number_rows 1 "" "s"] on $num_days 
-  distinct day[util_decode $num_days 1 "" "s"] satisfied your query <br>
+  top measurement[ad_decode $number_rows 1 "" "s"] on $num_days 
+  distinct day[ad_decode $num_days 1 "" "s"] satisfied your query <br>
   (between [append start_time ":00"] and [append end_time ":00"] Hrs 
   over the past $n_days days).
     <li>Average <b>load</b>: [format "%6.2f" $load_average].
@@ -269,11 +247,11 @@ if { $number_rows == 0 } {
 
 append page_content "
 [ad_table -Tsuffix system -bind $bind_vars \
-	mon_system_averages $avg_system_query $top_system_avg_table_def]
+    mon_system_averages $avg_system_query $top_system_avg_table_def]
 <hr width=70%>
 
 [ad_table -bind $bind_vars \
-	mon_proc_averages $avg_proc_query $top_proc_avg_table_def]
+    mon_proc_averages $avg_proc_query $top_proc_avg_table_def]
 <p>
 "
 
