@@ -68,7 +68,7 @@ ad_proc ad_monitor_top {} {
         return
     }
 
-    if [catch { set top_output [exec $top_location $top_options] } errmsg] {
+    if [catch { set top_output [eval "exec $top_location $top_options"] } errmsg] {
         # couldn't exec top at TopLocation
         if { ![file exists $top_location] } {
             ns_log Error "ad_monitor_top: top not found $top_location: $errmsg"
