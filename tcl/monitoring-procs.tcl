@@ -116,6 +116,13 @@ ad_proc ad_monitor_top {} {
             #set cpu_pct   [lindex $proc_list 9]
             #set command   [lindex $proc_list 10]
 
+           # Sometimes the "state" looks like "S N" and is split
+           # accross 2 list elements throwing off cpu_pct ...
+            set cpu_pct   [lindex $proc_list 8]
+            if {! [regexp {[\d\.]+} $cpu_pct] } {
+                set proc_list [lreplace $proc_list 7 8 "[lindex $proc_list 7]$cpu_pct"]
+                set cpu_pct [lindex $proc_list 8]
+            }
             set pid       [lindex $proc_list 0]
             set username  [lindex $proc_list 1]
             set threads   0
@@ -125,7 +132,6 @@ ad_proc ad_monitor_top {} {
             set resident_memory [lindex $proc_list 5]
             set state           [lindex $proc_list 7]
             set cpu_total_time  [lindex $proc_list 10]
-            set cpu_pct   [lindex $proc_list 8]
             set command   [lindex $proc_list 11]
 
             set proc_id [db_nextval ad_monitoring_top_proc_proc_id]
@@ -177,6 +183,7 @@ ad_proc ad_monitor_top {} {
                     "swap free" { set memory_swap_free $amount }
                     "swap in use" { set memory_swap_in_use $amount }
                     "total" { set memory_real $amount }                 
+                    "av" { set memory_real $amount }
                 }
             } 
 
@@ -187,9 +194,11 @@ ad_proc ad_monitor_top {} {
             }
         } elseif { [regexp -nocase {swa[a-z]*: (.*)} $line match memory] } {
             ## this is the swap header 
-            foreach mem [split $memory ","] {
-                regexp {^ *([^ ]*) (.*)} $mem match amount type
-                set amount [string trim [string toupper $amount]]
+            # remove commas, multiple spaces
+            regsub -all {,} [string trim $memory] "" memory   
+            regsub -all {[ ]+} $memory " " memory             
+
+            foreach [list amount type] [split $memory] {
                 # convert all mem values to Kilobytes 
                 regsub {K$} $amount "" amount
                 regsub {M$} $amount "000" amount
