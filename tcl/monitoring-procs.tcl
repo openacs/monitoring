@@ -292,8 +292,8 @@ ad_proc ad_monitoring_analyze_tables {} {
         set table_name [lindex $table_item 0]
         set percent [lindex $table_item 1]
         
-        #The string to execute.  
-        set execstr "analyze table :table_name estimate statistics sample :percent percent"
+        #The string to execute.  Don't use bind vars since you can't bind on table name.
+        set execstr "analyze table $table_name estimate statistics sample $percent percent"
     
         # for some reason this failed.. probably cause the table doesn't exists
         # anymore

@@ -90,9 +90,21 @@ if ($num_minutes) {
     $start_time = sprintf "%02d%02d%02d%02d", (localtime(time - (60*$num_minutes)))[4,3,2,1];
 
     seek LOG, -$bite_size, 2;
+    $search_from = tell(LOG);
 
     while (1) {
         while (<LOG>) {
+
+	    # Don't search past where we got to last time, rewind to
+	    # where we started and leave (next iter will go back
+	    # another chunk)
+	    if (defined $search_to) {
+		if (tell(LOG) >= $search_to) {
+		    seek LOG, -$bite_size, 1;
+		    last;
+		}
+	    }
+
             if (/^\[([0-9]+)\/([A-Za-z]+)\/([0-9]+):([0-9]+):([0-9]+)/) {
                 my($day, $month_name, $year, $hour, $minute) = ($1, $2, $3, $4, $5);
                 
@@ -122,6 +134,14 @@ if ($num_minutes) {
                     # the end of the file. If it's the second case, we 
                     # need to set the starting point to the end of the file.
                     $starting_point = $last_position unless $starting_point;
+                } else {
+		    # We found a dated entry but we need to go further
+		    # back. Go back from where we started from last
+		    # time, to avoid infinite loop where the whole
+		    # $bite_size doesn't have any dates
+
+		    $rewind = (tell(LOG) - $search_from); # how far to rewind to get back to search_from
+		    seek LOG, -$rewind, 1;
                 }
                 # We only need to get one time stamp
                 last;
@@ -130,11 +150,11 @@ if ($num_minutes) {
 
         last if defined $starting_point;
 
+	$search_to = tell(LOG);	# don't bother searching after where we are now
         seek LOG, -$bite_size, 1;
+	$search_from = tell(LOG);
 
-        $position = tell LOG;
-
-        if ($position < $bite_size) {
+        if ($search_from < $bite_size) {
             # then we need to read the entire file
             $starting_point = 0;
             last;
