@@ -14,10 +14,10 @@
     </database-support>
         <owner>Joseph Bank</owner>
         <owner url="mailto:vinod@kurup.com">Vinod Kurup</owner>
-        <summary>Monitoring apps ported from ACS 3.4.x</summary>
+        <summary>Server and database monitoring.</summary>
         <release-date>2002-08-19</release-date>
         <vendor url="http://www.openacs.org/">OpenACS</vendor>
-        <description format="text/html">The monitoring apps from ACS 3.4.x /admin/monitoring directory.  Includes Cassandracle, Watchdog, etc.</description>
+        <description format="text/html">A collection of tools for monitoring server and database health, including cassandracle (oracle monitoring), watchdog (error log monitoring).  Derived from the ACS 3.4.x /admin/monitoring tools.</description>
 
         <requires url="acs-kernel" version="4.6.2"/>
 
