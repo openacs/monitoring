@@ -14,6 +14,6 @@
 <li><a href="startup-log">Startup Log</a>
 <li><a href="top">Statistics from top</a>
 <li><a href="analyze">Table analysis</a>
-@dev_support_link@
+@dev_support_link;noquote@
 
 </ul>
