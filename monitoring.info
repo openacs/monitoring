@@ -88,13 +88,13 @@
         <parameters>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TopOptions"  default="-bn1" description="Options to use with top on your OS" section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PersontoNotify"  description="Person to notify about watchdog (default to system owner if blank)" section_name="monitoring"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="WatchDogFrequency"  default="300" description="Frequency to run watchdog in minutes." section_name="monitoring"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="WatchDogFrequency"  default="300" description="Frequency to run watchdog (in minutes)" section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="WatchDogParser"  description="Program to parse errors for watchdog (leave blank to use default program)" section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumDaysToEstAllRows"  default="7" description="Number of Days to Estimate all rows." section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AutoAnalyzeP"  default="0" description="Automatically analyze database tables" section_name="monitoring"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="LoadAverageAlertThreshold"  default="3.0" description="Load Average to start alerting on for Top" section_name="monitoring"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TopLocation"  default="/usr/local/bin/top" description="Location of Top Program" section_name="monitoring"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TopFrequency"  default="0" description="Frequency To Run Top" section_name="monitoring"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TopFrequency"  default="0" description="Frequency To Run Top (in minutes)" section_name="monitoring"/>
         </parameters>
 
     </version>
