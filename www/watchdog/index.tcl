@@ -18,7 +18,7 @@ if { [info exists num_minutes] && ![empty_string_p $num_minutes] } {
     set bytes [expr $kbytes * 1000]
 }
 
-doc_return 200 text/html "[ad_header "WatchDog"]
+set page_content "[ad_header "WatchDog"]
 
 <h2>WatchDog</h2>
 

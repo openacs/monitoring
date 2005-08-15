@@ -260,6 +260,4 @@ append page_content "
 ### clean up, return page.
 append page_content "</table>  [ad_admin_footer]"
 
-doc_return 200 text/html $page_content
-
 ##### EOF

@@ -8,7 +8,7 @@ ad_page_contract {
 } {
 }
 
-doc_return 200 text/html "[ad_header "[ad_system_name] Configuration"]
+set page_content "[ad_header "[ad_system_name] Configuration"]
 
 <h2>[ad_system_name] Configuration</h2>
 

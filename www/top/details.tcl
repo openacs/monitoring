@@ -300,5 +300,3 @@ append page_content "[ad_table -bind $bind_vars \
 
 </table>  [ad_admin_footer]"
 
-doc_return 200 text/html $page_content
-

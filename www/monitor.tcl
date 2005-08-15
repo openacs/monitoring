@@ -76,5 +76,3 @@ foreach connection $connections {
 append whole_page "</table>
 [ad_footer]
 "
-
-doc_return 200 text/html $whole_page

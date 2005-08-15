@@ -95,5 +95,3 @@ close $error_log
 append page_content "<pre>$out</pre>
 [ad_admin_footer]
 "
-
-doc_return 200 text/html $page_content
