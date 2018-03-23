@@ -117,7 +117,7 @@ ad_proc ad_monitor_top {} {
             #set command   [lindex $proc_list 10]
 
            # Sometimes the "state" looks like "S N" and is split
-           # accross 2 list elements throwing off cpu_pct ...
+           # across 2 list elements throwing off cpu_pct ...
             set cpu_pct   [lindex $proc_list 8]
             if {! [regexp {[\d\.]+} $cpu_pct] } {
                 set proc_list [lreplace $proc_list 7 8 "[lindex $proc_list 7]$cpu_pct"]
