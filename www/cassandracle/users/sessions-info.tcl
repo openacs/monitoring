@@ -117,7 +117,7 @@ append page_content "</table>\n
 <p>
 See <a href=http://www.arsdigita.com/asj/oracle-tips#sessions target=other>\"Be Wary of SQLPlus\"</a> in <a href=http://www.arsdigita.com/asj/oracle-tips target=other>Oracle Tips</a> for how this page can be useful in killing hung database sessions.
 (Any queries that are ACTIVE and have a high \"Seconds in wait\"
-are good canidates to consider killing.)
+are good candidates to consider killing.)
 
 [ad_admin_footer]
 "
