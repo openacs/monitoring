@@ -89,7 +89,7 @@ set fk_subquery "
           -- Our test case runs in 0.10 second with BOTH criteria. we
           -- gave up after 20 seconds without prnt_tbl criterion, and
           -- it took about six seconds without chld_tbl criterion.
-          -- Our use of these critera limits our display to foreign keys 
+          -- Our use of these criteria limits our display to foreign keys 
           -- and parents that have the same owner as the child table.
      and  prnt_tbl.owner = :owner
      and  chld_col.owner = :owner
