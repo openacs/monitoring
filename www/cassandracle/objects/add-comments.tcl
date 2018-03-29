@@ -19,7 +19,7 @@ set owner [lindex $object_info 0]
 set object_name [lindex $object_info 1]
 
 # check parameter to see if we want to display SQL as comments
-# actually harcoded now during development, but will use ns_info later
+# actually hardcoded now during development, but will use ns_info later
 
 set show_sql_p "t"
 
