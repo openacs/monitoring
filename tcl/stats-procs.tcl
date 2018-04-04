@@ -415,10 +415,10 @@ proc monitoring::sched {} {
 
     set colTitles [list ID Status Callback Data Flags "Last Queue" "Last Start" "Last End" Duration "Next Run"]
 
-    set html [monitoring::header "Scheduled Proceedures"]
+    set html [monitoring::header "Scheduled Procedures"]
     append html [monitoring::results $col $colTitles sched $rows $reverseSort]
     append html [monitoring::footer]
-    
+
     return $html
 }
 
