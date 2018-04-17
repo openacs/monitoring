@@ -43,16 +43,16 @@ set page_content "
 <p>
 "
 
-# we do two seperate queries: one for the table (0 or 1)
+# we do two separate queries: one for the table (0 or 1)
 # and one for the columns (0, 1, or many)
-# note that these same queries are similar to 
-# those run in /objects/describe-table.tcl, excpet
+# note that these same queries are similar to
+# those run in /objects/describe-table.tcl, except
 # I do not have the not null conditions
 
 set table_comment_query "
 -- /objects/add-comments.tcl
 -- get table comments
--- 
+--
 select
      dtc.comments as table_comment
 from

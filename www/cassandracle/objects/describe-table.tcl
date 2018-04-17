@@ -13,9 +13,9 @@ ad_page_contract {
 
 # check arguments -----------------------------------------------------
 
-# it is not clear to me whey we have one object_name argument here
-# of the format OWNER.TABLE_NAME that needs to be parsed, rather than 
-# two seperate arguments?
+# it is not clear to me why we have one object_name argument here
+# of the format OWNER.TABLE_NAME that needs to be parsed, rather than
+# two separate arguments?
 
 # $object_name   REQUIRED ARGUMENT
 set object_info [split $object_name .]
@@ -311,7 +311,7 @@ append page_content "</table>
 
 # display comments on tables and columns, if any exist -------------------------------
 
-# we do two seperate queries: one for the table (0 or 1)
+# we do two separate queries: one for the table (0 or 1)
 # and one for the columns (0, 1, or many)
 # note that these same queries are run in /objects/add-comments.tcl
 
