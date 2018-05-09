@@ -18,7 +18,7 @@ set parameters_url [export_vars -base "/shared/parameters" {
     package_id { return_url [ad_return_url] }
 }]
 
-set context {}
+set context [list]
 set title "Monitoring [ad_system_name]"
 
 ad_return_template
