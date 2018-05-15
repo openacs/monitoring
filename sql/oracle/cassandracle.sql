@@ -2,14 +2,14 @@
 -- 1999-12-09
 -- David Ambercrobie: abe@arsdigita.com
 --
--- Cassandracle normally connects as a user with DBA privleges,
--- but we can also grant select privledges to a role, then 
+-- Cassandracle normally connects as a user with DBA privileges,
+-- but we can also grant select privileges to a role, then 
 -- grant this role to normal database users. This allows a 
 -- normal ACS Oracle user to be able to use Cassandracle
 -- using the normal driver without worrying about DBA role
 -- users running amok.
 --
--- More privliges will be added to this role as Cassandracle evolves.
+-- More privileges will be added to this role as Cassandracle evolves.
 --
 -- You might need to restart the server after granting this
 -- role to an ACS Oracle user: granting a new role to a 
