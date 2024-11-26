@@ -317,14 +317,14 @@ proc monitoring::process {} {
         Uptime [monitoring::fmtSeconds [ns_info uptime]] \
         Process "[ns_info pid] [ns_info nsd]" \
         Configuration [ns_info config] \
-        "Page Root" [ns_info pageroot] \
-        "Tcl Library" [ns_info tcllib] \
+        "Page Root" [ns_server pagedir] \
+        "Tcl Library" [ns_server tcllib] \
         Log [ns_info log] \
         Version "[ns_info version] ([ns_info label])" \
         "Build Date" [ns_info builddate] \
         Servers [join [ns_info servers] <br>] \
         Threads [join [ns_server threads] <br>] \
-        "Keep Alive" [ns_server keepalive] \
+        "Keep Alive" [ns_conn keepalived] \
         Callbacks [join [ns_info callbacks] <br>] \
         "Socket Callbacks" [join [ns_info sockcallbacks] <br>] \
         Active [join [ns_server active] <br>]]

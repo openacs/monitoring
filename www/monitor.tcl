@@ -13,7 +13,7 @@ set connections [ns_server active]
 # let's build an ns_set just to figure out how many distinct elts; kind of a kludge
 # but I don't see how it would be faster in raw Tcl
 
-set scratch [ns_set new scratch]
+set scratch [ns_set create scratch]
 foreach connection $connections {
     ns_set cput $scratch [lindex $connection 1] 1
 }
